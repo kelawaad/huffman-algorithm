@@ -1,5 +1,5 @@
 def getFrequencies(fname):
-    f = open("test.txt", "r")
+    f = open(fname, "r")
     s = f.readline()
 
     freq = {}
@@ -14,7 +14,6 @@ def getFrequencies(fname):
         s = f.readline()
 
     return freq
-
 
 
 freq = getFrequencies("test.txt")
