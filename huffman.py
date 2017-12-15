@@ -19,34 +19,44 @@ def getAllFiles(path):
 #os.path.isdir(path)    returns true if path is a folder
 #os.path.exists(path)   return true if file/folder exists
 
-files = getAllFiles('empty')
+start_time = time.time()
+num_files = 0
+files = getAllFiles('level0')
 for f in files:
-    print(f)
-fname = 'abc'
-freq = myfuncs.getFrequencies(fname)
-codes = myfuncs.get_codes(freq)
-max_len = 0
-for key in codes:
-    if len(codes[key]) > max_len:
-        max_len = len(codes[key])
+    print('Compressing file: {}'.format(f))
+    fname = f
+    freq = myfuncs.getFrequencies(fname)
+    codes = myfuncs.get_codes(freq)
+    max_len = 0
+    for key in codes:
+        if len(codes[key]) > max_len:
+            max_len = len(codes[key])
 
-print('Byte\t{:^8}\tNew Code'.format('Code'));
-for key in sorted(codes):
-    print('{0:>3}\t{1:08b}\t{2:>{3}}'.format(key, key, codes[key], max_len))
+    print('Byte\t{:^8}\tNew Code'.format('Code'));
+    for key in sorted(codes):
+        print('{0:>3}\t{1:08b}\t{2:>{3}}'.format(key, key, codes[key], max_len))
 
-total = 0
-for key in freq:
-    total += freq[key]
+    total = 0
+    for key in freq:
+        total += freq[key]
 
-print(total)
+    print(total)
 
-start = time.time()
-size_wheader, size_woheader = myfuncs.compress_file(fname, codes)
-end = time.time()
-print('size with header = {}\nsize without header = {}'.format(size_wheader, size_woheader))
+    start = time.time()
+    size_wheader, size_woheader = myfuncs.compress_file(fname, codes)
+    end = time.time()
+    print('size with header = {}\nsize without header = {}'.format(size_wheader, size_woheader))
 
-print("Compression ratio = {}".format(size_wheader/total))
+    print("Compression ratio = {}".format(size_wheader/total))
 
-print('Time Elapsed = {}ms'.format((end - start) * 1000))
+    print('Time Elapsed = {}ms'.format((end - start) * 1000))
 
-myfuncs.decompress_file(fname + '_compressed')
+    myfuncs.decompress_file(fname + '_compressed')
+    print("====================================================")
+    freq.clear()
+    codes.clear()
+    num_files += 1
+
+end_time = time.time()
+
+print('Compressde {} files in {}ms'.format(num_files, (end_time - start_time) * 1000))
