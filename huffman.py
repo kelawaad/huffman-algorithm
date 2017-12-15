@@ -1,11 +1,27 @@
 import myfuncs
 import time
-import os.path
+import os
+
+def getAllFiles(path):
+    files = []
+    if not os.path.isdir(path):
+        files.append(path)
+        return files
+
+    for x in os.listdir(path):
+        if os.path.isdir(path + '/' + x):
+            files += getAllFiles(path + '/' + x)
+        else:
+            files.append(path + '/' + x)
+    return files
 
 
 #os.path.isdir(path)    returns true if path is a folder
 #os.path.exists(path)   return true if file/folder exists
 
+files = getAllFiles('empty')
+for f in files:
+    print(f)
 fname = 'abc'
 freq = myfuncs.getFrequencies(fname)
 codes = myfuncs.get_codes(freq)
