@@ -106,21 +106,13 @@ def construct_header(codes):
     
     return header
 
-def extract_header_text(file_content):
+def extract_header_text(file):
+    f = open(file, 'rb')
+    file_content = f.read()
     header = ''
-    file_content = str(file_content)
-    for i in range(2, len(file_content)):
-        print('i = ' + str(i))
-        print('file_content[i] = ' + str(file_content[i]))
-        if file_content[i] == '\\' and file_content[i+1] == 'n':
-            if i + 2 < len(file_content) and file_content[i+2] == ',':
-                header += str(file_content[i])
-            else:
-                #print('Returning..')
-                #print('header = ' + header)
-                return header, file_content[i+1:]
-        header += str(file_content[i])
-            
+    for b in file_content:
+        print(b)
+
 
 def get_compressed_content(compressed_content):
     length = len(compressed_content)
@@ -142,6 +134,7 @@ def get_compressed_content(compressed_content):
         #print('ch = "' + str(chr(ch)) + '"')
         total_content += str(chr(ch))
     return total_content
+
 
 
 def compress_file(fname, codes):
@@ -196,7 +189,7 @@ def build_reverse_codes(arr):
 
 def decompress_file(fname, codes=None):
     f1 = open(fname, 'rb')
-    fname.replace("_compressed", '')
+    fname = fname.replace("_compressed", '')
     f2 = open(fname +'_2', 'wb')
 
     #print("=============Decompressing=================")
